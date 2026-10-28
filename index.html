@@ -2108,7 +2108,7 @@ function renderMedications(){
 
     patient: {
       name: document.getElementById('pt-name').value,
-      bed: document.getElementById('pt-id').value,
+      ID: document.getElementById('pt-id').value,
       weight: document.getElementById('pt-weight').value,
       age: document.getElementById('pt-age').value,
       sex: document.getElementById('pt-sex').value,
@@ -2185,27 +2185,31 @@ function renderMedications(){
         document.getElementById('pocus-impression').value
     },
 
-    medications: activeMedications,
+const drugKey = document.getElementById('drug-select').value;
+      const drug = DRUGS[drugKey];
+      const strKey = document.getElementById('strength-select').value;
+      const strObj = drug.strengths[strKey] || Object.values(drug.strengths)[0];
+      
+      const inputVal = document.getElementById('calc-input').value;
+      const outputVal = document.getElementById('calc-output-val').textContent;
+      const inputUnit = document.getElementById('input-unit').textContent;
+      const outputUnit = document.getElementById('output-unit').textContent;
 
-    infusionCalculation: {
-
-      drug:
-        document.getElementById('drug-select')
-        .selectedOptions[0].text,
-
-      dosage:
-        document.getElementById('calc-input').value,
-
-      result:
-        document.getElementById('calc-output-val')
-        .textContent
-
+      return {
+        timestamp: new Date().toLocaleString(),
+        patient: { name, id, weight, age, sex, crcl },
+        calculation: {
+          drug: drug.name,
+          preparation: strObj.label,
+          direction: currentCalcMode === 'forward' ? 'Target Dose -> Pump Rate' : 'Pump Rate -> Delivered Dose',
+          input: `${inputVal} ${inputUnit}`,
+          output: `${outputVal} ${outputUnit}`,
+          details: strObj.detail
+        }
+      };
     }
 
-  };
-
-}
-
+    
    function generateFormattedTextSummary() {
 
   const data = getSummaryData();
