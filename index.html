@@ -2086,37 +2086,111 @@ function renderMedications(){
     // ACTION FUNCTIONS: EXPORT, SAVE, SHARE, PRINT
     // ==========================================
 
-    function getSummaryData() {
-      const name = document.getElementById('pt-name').value || 'Unassigned';
-      const id = document.getElementById('pt-id').value || 'N/A';
-      const weight = document.getElementById('pt-weight').value || '0';
-      const age = document.getElementById('pt-age').value || '0';
-      const sex = document.getElementById('pt-sex').value;
-      const crcl = document.getElementById('cg-crcl-val').textContent;
-      
-      const drugKey = document.getElementById('drug-select').value;
-      const drug = DRUGS[drugKey];
-      const strKey = document.getElementById('strength-select').value;
-      const strObj = drug.strengths[strKey] || Object.values(drug.strengths)[0];
-      
-      const inputVal = document.getElementById('calc-input').value;
-      const outputVal = document.getElementById('calc-output-val').textContent;
-      const inputUnit = document.getElementById('input-unit').textContent;
-      const outputUnit = document.getElementById('output-unit').textContent;
+    function getSummaryData(){
 
-      return {
-        timestamp: new Date().toLocaleString(),
-        patient: { name, id, weight, age, sex, crcl },
-        calculation: {
-          drug: drug.name,
-          preparation: strObj.label,
-          direction: currentCalcMode === 'forward' ? 'Target Dose -> Pump Rate' : 'Pump Rate -> Delivered Dose',
-          input: `${inputVal} ${inputUnit}`,
-          output: `${outputVal} ${outputUnit}`,
-          details: strObj.detail
-        }
-      };
+  return {
+
+    timestamp: new Date().toLocaleString(),
+
+    patient: {
+      name: document.getElementById('pt-name').value,
+      bed: document.getElementById('pt-id').value,
+      weight: document.getElementById('pt-weight').value,
+      age: document.getElementById('pt-age').value,
+      sex: document.getElementById('pt-sex').value,
+      crcl: document.getElementById('cg-crcl-val').textContent
+    },
+
+    diagnosis: {
+      problems: document.getElementById('problem-list').value,
+      comorbids: document.getElementById('comorbid').value,
+      resus: document.getElementById('resus-status').value
+    },
+
+    targets: {
+      map: document.getElementById('target-map').value,
+      spo2: document.getElementById('target-spo2').value
+    },
+
+    oxygen: {
+      support: document.getElementById('highest-o2').value,
+      fio2: document.getElementById('highest-fio2').value,
+      periIntubationArrest:
+        document.getElementById('peri-arrest').value
+    },
+
+    monitoring: {
+      hr: document.getElementById('hr').value,
+      rr: document.getElementById('rr').value,
+      sbp: document.getElementById('sbp').value,
+      dbp: document.getElementById('dbp').value,
+      map: document.getElementById('map-output').textContent,
+      shockIndex:
+        document.getElementById('shock-index').textContent,
+      spo2: document.getElementById('spo2').value,
+      fio2: document.getElementById('fio2').value,
+      rox: document.getElementById('rox-score').textContent,
+      pf: document.getElementById('pf-ratio').textContent
+    },
+
+    abg: {
+      ph: document.getElementById('ph').value,
+      pao2: document.getElementById('pao2').value,
+      paco2: document.getElementById('paco2').value,
+      hco3: document.getElementById('hco3').value,
+      be: document.getElementById('be').value
+    },
+
+    pocus: {
+
+      lung: {
+        admission:
+          document.getElementById('lus-admission').value,
+        ward:
+          document.getElementById('lus-ward').value,
+        discharge:
+          document.getElementById('lus-discharge').value
+      },
+
+      ivcDiameter:
+        document.getElementById('ivc-size').value,
+
+      ivcCollapse:
+        document.getElementById('ivc-collapse').value,
+
+      deltaVTI:
+        document.getElementById('delta-vti').value,
+
+      deltaSV:
+        document.getElementById('delta-sv').value,
+
+      deltaCO:
+        document.getElementById('delta-co').value,
+
+      impression:
+        document.getElementById('pocus-impression').value
+    },
+
+    medications: activeMedications,
+
+    infusionCalculation: {
+
+      drug:
+        document.getElementById('drug-select')
+        .selectedOptions[0].text,
+
+      dosage:
+        document.getElementById('calc-input').value,
+
+      result:
+        document.getElementById('calc-output-val')
+        .textContent
+
     }
+
+  };
+
+}
 
    function generateFormattedTextSummary() {
 
@@ -2193,6 +2267,7 @@ function saveCalculation() {
       showToast('Report exported successfully!', 'sky');
     }
 
+  
     // 3. SHARE FUNCTION (Web Share API or Clipboard Fallback)
     async function shareCalculation() {
       const text = generateFormattedTextSummary();
