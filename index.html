@@ -69,10 +69,16 @@
             <i class="fa-solid fa-floppy-disk text-emerald-400"></i> Save
           </button>
           
-          <!-- Export Button -->
-          <button onclick="exportReport()" class="bg-slate-700 hover:bg-slate-600 text-slate-100 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border border-slate-600 transition shadow-sm">
-            <i class="fa-solid fa-file-arrow-down text-sky-400"></i> Export
-          </button>
+          <button onclick="exportPDF()" ...
+        >
+        PDF
+       </button>
+
+       <button onclick="exportCSV()" ...
+        >
+        CSV
+        </button>
+
 
           <!-- Share Button -->
           <button onclick="shareCalculation()" class="bg-slate-700 hover:bg-slate-600 text-slate-100 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border border-slate-600 transition shadow-sm">
@@ -2267,7 +2273,69 @@ function saveCalculation() {
       showToast('Report exported successfully!', 'sky');
     }
 
-  
+  function exportCSV(){
+
+    const d = getSummaryData();
+
+    let csv = 'Field,Value\n';
+
+    csv += `"Patient Name","${d.patient.name}"\n`;
+    csv += `"Bed","${d.patient.bed}"\n`;
+    csv += `"Weight","${d.patient.weight}"\n`;
+    csv += `"Age","${d.patient.age}"\n`;
+    csv += `"Sex","${d.patient.sex}"\n`;
+    csv += `"CrCl","${d.patient.crcl}"\n`;
+
+    csv += `"Problem List","${(d.diagnosis?.problems || '').replace(/\n/g,' | ')}"\n`;
+    csv += `"Comorbidities","${d.diagnosis?.comorbids || ''}"\n`;
+
+    csv += `"Target MAP","${d.targets?.map || ''}"\n`;
+    csv += `"Target SpO2","${d.targets?.spo2 || ''}"\n`;
+
+    csv += `"HR","${d.monitoring?.hr || ''}"\n`;
+    csv += `"RR","${d.monitoring?.rr || ''}"\n`;
+    csv += `"SBP","${d.monitoring?.sbp || ''}"\n`;
+    csv += `"DBP","${d.monitoring?.dbp || ''}"\n`;
+    csv += `"MAP","${d.monitoring?.map || ''}"\n`;
+
+    csv += `"ROX","${d.monitoring?.rox || ''}"\n`;
+    csv += `"PF Ratio","${d.monitoring?.pf || ''}"\n`;
+
+    csv += `"pH","${d.abg?.ph || ''}"\n`;
+    csv += `"PaO2","${d.abg?.pao2 || ''}"\n`;
+    csv += `"PaCO2","${d.abg?.paco2 || ''}"\n`;
+    csv += `"HCO3","${d.abg?.hco3 || ''}"\n`;
+
+    csv += `"LUS Admission","${d.pocus?.lung?.admission || ''}"\n`;
+    csv += `"LUS Ward","${d.pocus?.lung?.ward || ''}"\n`;
+    csv += `"LUS Discharge","${d.pocus?.lung?.discharge || ''}"\n`;
+
+    csv += `"IVC Diameter","${d.pocus?.ivcDiameter || ''}"\n`;
+    csv += `"IVC Collapse","${d.pocus?.ivcCollapse || ''}"\n`;
+
+    csv += `"POCUS Impression","${d.pocus?.impression || ''}"\n`;
+
+    activeMedications.forEach((m,i)=>{
+
+        csv += `"Medication ${i+1}","${m.drug} - ${m.dose}"\n`;
+
+    });
+
+    const blob = new Blob(
+      [csv],
+      { type:'text/csv;charset=utf-8;' }
+    );
+
+    const link = document.createElement('a');
+
+    link.href = URL.createObjectURL(blob);
+
+    link.download =
+      'ICU_Patient_Summary.csv';
+
+    link.click();
+}
+
     // 3. SHARE FUNCTION (Web Share API or Clipboard Fallback)
     async function shareCalculation() {
       const text = generateFormattedTextSummary();
