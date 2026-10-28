@@ -1837,8 +1837,7 @@ function renderActiveDrugList(){
 
     const list =
         document.getElementById('active-drugs-list');
-const list =
-document.getElementById('medication-list');
+
 
     if(!list) return;
 
@@ -2185,7 +2184,9 @@ function renderMedications(){
         document.getElementById('pocus-impression').value
     },
 
-const drugKey = document.getElementById('drug-select').value;
+ infusionCalculation: {
+
+      const drugKey = document.getElementById('drug-select').value;
       const drug = DRUGS[drugKey];
       const strKey = document.getElementById('strength-select').value;
       const strObj = drug.strengths[strKey] || Object.values(drug.strengths)[0];
@@ -2208,8 +2209,11 @@ const drugKey = document.getElementById('drug-select').value;
         }
       };
     }
-
     
+
+      
+
+
    function generateFormattedTextSummary() {
 
   const data = getSummaryData();
@@ -2315,7 +2319,6 @@ function saveCalculation() {
     csv += `"POCUS Impression","${d.pocus?.impression || ''}"\n`;
 
     activeDrugs.forEach((d,i)=>{
-
         csv += `"Drug ${i+1}","${d.drug} - ${d.result}"\n`;
 
     });
