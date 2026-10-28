@@ -2240,7 +2240,7 @@ Timestamp: ${data.timestamp}
 PATIENT DEMOGRAPHY
 
 Name : ${data.patient.name}
-Bed  : ${data.patient.bed}
+Bed  : ${data.patient.id}
 
 Weight : ${data.patient.weight} kg
 Age    : ${data.patient.age}
@@ -2269,21 +2269,8 @@ function saveCalculation() {
       showToast('Calculation saved locally successfully!', 'emerald');
     }
 
-    // 2. EXPORT FUNCTION (Downloads Text Report)
-    function exportReport() {
-      const text = generateFormattedTextSummary();
-      const ptId = document.getElementById('pt-id').value || 'Patient';
-      const filename = `Infusion_Report_${ptId.replace(/\s+/g, '_')}.txt`;
-      
-      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = filename;
-      link.click();
-      URL.revokeObjectURL(link.href);
-      
-      showToast('Report exported successfully!', 'sky');
-    }
+    // 2. EXPORT FUNCTION 
+
 
   function exportCSV(){
 
@@ -2292,7 +2279,7 @@ function saveCalculation() {
     let csv = 'Field,Value\n';
 
     csv += `"Patient Name","${d.patient.name}"\n`;
-    csv += `"Bed","${d.patient.bed}"\n`;
+    csv += `"Bed","${d.patient.id}"\n`;
     csv += `"Weight","${d.patient.weight}"\n`;
     csv += `"Age","${d.patient.age}"\n`;
     csv += `"Sex","${d.patient.sex}"\n`;
@@ -2327,9 +2314,9 @@ function saveCalculation() {
 
     csv += `"POCUS Impression","${d.pocus?.impression || ''}"\n`;
 
-    activeMedications.forEach((m,i)=>{
+    activeDrugs.forEach((d,i)=>{
 
-        csv += `"Medication ${i+1}","${m.drug} - ${m.dose}"\n`;
+        csv += `"Drug ${i+1}","${d.drug} - ${d.result}"\n`;
 
     });
 
@@ -2348,6 +2335,7 @@ function saveCalculation() {
     link.click();
 }
 
+ 
 
 
     // 3. SHARE FUNCTION (Web Share API or Clipboard Fallback)
