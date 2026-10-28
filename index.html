@@ -2329,13 +2329,9 @@ function saveCalculation() {
     link.click();
 }
 function exportPDF() {
-   const { jsPDF } = window.jspdf;
-   const doc = new jsPDF();
-
-   doc.text("Critical Care Patient Summary", 10, 10);
-
-   doc.save("ICU_Report.pdf");
+   alert("PDF button works");
 }
+
 
     // 3. SHARE FUNCTION (Web Share API or Clipboard Fallback)
     async function shareCalculation() {
