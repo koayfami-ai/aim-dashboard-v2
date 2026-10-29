@@ -2114,11 +2114,20 @@ function renderMedications(){
 
 function getSummaryData(){
 
+  const drugKey = document.getElementById('drug-select').value;
+  const drug = DRUGS[drugKey];
+
+  const strKey =
+    document.getElementById('strength-select').value;
+
+  const strObj =
+    drug?.strengths?.[strKey];
+
   return {
 
     timestamp: new Date().toLocaleString(),
 
-    patient: {
+    patient:{
       name: document.getElementById('pt-name').value,
       bed: document.getElementById('pt-id').value,
       weight: document.getElementById('pt-weight').value,
@@ -2127,39 +2136,34 @@ function getSummaryData(){
       crcl: document.getElementById('cg-crcl-val').textContent
     },
 
-    diagnosis: {
+    diagnosis:{
       problems: document.getElementById('problem-list').value,
       comorbids: document.getElementById('comorbid').value,
       resus: document.getElementById('resus-status').value
     },
 
-    targets: {
+    targets:{
       map: document.getElementById('target-map').value,
       spo2: document.getElementById('target-spo2').value
     },
 
-    oxygen: {
+    oxygen:{
       support: document.getElementById('highest-o2').value,
-      fio2: document.getElementById('highest-fio2').value,
-      periIntubationArrest:
-        document.getElementById('peri-arrest').value
+      fio2: document.getElementById('highest-fio2').value
     },
 
-    monitoring: {
+    monitoring:{
       hr: document.getElementById('hr').value,
       rr: document.getElementById('rr').value,
       sbp: document.getElementById('sbp').value,
       dbp: document.getElementById('dbp').value,
       map: document.getElementById('map-output').textContent,
-      shockIndex:
-        document.getElementById('shock-index').textContent,
-      spo2: document.getElementById('spo2').value,
-      fio2: document.getElementById('fio2').value,
+      shockIndex: document.getElementById('shock-index').textContent,
       rox: document.getElementById('rox-score').textContent,
       pf: document.getElementById('pf-ratio').textContent
     },
 
-    abg: {
+    abg:{
       ph: document.getElementById('ph').value,
       pao2: document.getElementById('pao2').value,
       paco2: document.getElementById('paco2').value,
@@ -2167,60 +2171,40 @@ function getSummaryData(){
       be: document.getElementById('be').value
     },
 
-    pocus: {
-
-      lung: {
-        admission:
-          document.getElementById('lus-admission').value,
-        ward:
-          document.getElementById('lus-ward').value,
-        discharge:
-          document.getElementById('lus-discharge').value
+    pocus:{
+      lung:{
+        admission: document.getElementById('lus-admission').value,
+        ward: document.getElementById('lus-ward').value,
+        discharge: document.getElementById('lus-discharge').value
       },
 
-      ivcDiameter:
-        document.getElementById('ivc-size').value,
+      ivcDiameter: document.getElementById('ivc-size').value,
+      ivcCollapse: document.getElementById('ivc-collapse').value,
 
-      ivcCollapse:
-        document.getElementById('ivc-collapse').value,
+      deltaVTI: document.getElementById('delta-vti').value,
+      deltaSV: document.getElementById('delta-sv').value,
+      deltaCO: document.getElementById('delta-co').value,
 
-      deltaVTI:
-        document.getElementById('delta-vti').value,
-
-      deltaSV:
-        document.getElementById('delta-sv').value,
-
-      deltaCO:
-        document.getElementById('delta-co').value,
-
-      impression:
-        document.getElementById('pocus-impression').value
+      impression: document.getElementById('pocus-impression').value
     },
 
-  const drugKey = document.getElementById('drug-select').value;
-      const drug = DRUGS[drugKey];
-      const strKey = document.getElementById('strength-select').value;
-      const strObj = drug.strengths[strKey] || Object.values(drug.strengths)[0];
-      
-      const inputVal = document.getElementById('calc-input').value;
-      const outputVal = document.getElementById('calc-output-val').textContent;
-      const inputUnit = document.getElementById('input-unit').textContent;
-      const outputUnit = document.getElementById('output-unit').textContent;
+    activeDrugs,
+    activeMedications,
 
-      return {
-        timestamp: new Date().toLocaleString(),
-        patient: { name, id, weight, age, sex, crcl },
-        calculation: {
-          drug: drug.name,
-          preparation: strObj.label,
-          direction: currentCalcMode === 'forward' ? 'Target Dose -> Pump Rate' : 'Pump Rate -> Delivered Dose',
-          input: `${inputVal} ${inputUnit}`,
-          output: `${outputVal} ${outputUnit}`,
-          details: strObj.detail
+    calculation:{
+      drug: drug?.name || '',
+      preparation: strObj?.label || '',
+      result: document.getElementById('calc-output-val').textContent
     }
+
   };
+
 }
 
+
+
+
+  
 function generateFormattedTextSummary() {
 
   const data = getSummaryData();
@@ -2368,7 +2352,7 @@ function exportCSV(){
       ['SBP', d.monitoring.sbp],
       ['DBP', d.monitoring.dbp],
       ['MAP', d.monitoring.map],
-      ['Shock Index', d.monitoring.shockIndex],
+      ['Shock Index', d.monitoring.shock],
       ['ROX Score', d.monitoring.rox],
       ['PF Ratio', d.monitoring.pf],
 
@@ -2404,7 +2388,7 @@ Dose : ${m.dose}
 });
 
 
-d.activeDrugs.forEach((d,index)=>{
+d.activeDrugs.forEach((d,i)=>{
 
     infusionSummary += `
 Infusion ${index+1}
