@@ -2264,7 +2264,7 @@ Timestamp: ${data.timestamp}
 PATIENT DEMOGRAPHY
 
 Name : ${data.patient.name}
-Bed  : ${data.patient.id}
+Bed  : ${data.patient.bed}
 
 Weight : ${data.patient.weight} kg
 Age    : ${data.patient.age}
@@ -2327,6 +2327,8 @@ function saveCalculation() {
 
 function exportCSV(){
 
+
+
     const d = getSummaryData();
 
     const rows = [
@@ -2340,6 +2342,7 @@ function exportCSV(){
 
       ['Problems', d.diagnosis.problems],
       ['Comorbidities', d.diagnosis.comorbids],
+      ['Resuscitation Status', d.diagnosis.resus],
 
       ['Target MAP', d.targets.map],
       ['Target SpO2', d.targets.spo2],
@@ -2352,7 +2355,7 @@ function exportCSV(){
       ['SBP', d.monitoring.sbp],
       ['DBP', d.monitoring.dbp],
       ['MAP', d.monitoring.map],
-      ['Shock Index', d.monitoring.shock],
+      ['Shock Index', d.monitoring.shockIndex],
       ['ROX Score', d.monitoring.rox],
       ['PF Ratio', d.monitoring.pf],
 
@@ -2360,12 +2363,15 @@ function exportCSV(){
       ['PaO2', d.abg.pao2],
       ['PaCO2', d.abg.paco2],
       ['HCO3', d.abg.hco3],
+      ['Base Excess', d.abg.be],
 
       ['LUS Admission', d.pocus.lung.admission],
       ['LUS Ward', d.pocus.lung.ward],
       ['LUS Discharge', d.pocus.lung.discharge],
+
       ['IVC Diameter', d.pocus.ivcDiameter],
       ['IVC Collapse', d.pocus.ivcCollapse],
+
       ['Delta VTI', d.pocus.deltaVTI],
       ['Delta SV', d.pocus.deltaSV],
       ['Delta CO', d.pocus.deltaCO],
@@ -2374,57 +2380,49 @@ function exportCSV(){
 
     ];
 
-    d.activeMedication.forEach((m,i)=>{
+    d.activeMedications.forEach((m,index)=>{
 
-     medicationSummary += `
-Medication ${index+1}
----------------------
+      rows.push([
+        `Medication ${index + 1}`,
+        `${m.drug} - ${m.dose}`
+      ]);
 
-Drug : ${m.drug}
-Dose : ${m.dose}
+    });
 
-]);
+    d.activeDrugs.forEach((drug,index)=>{
 
-});
+      rows.push([
+        `Infusion ${index + 1}`,
+        `${drug.drug} | ${drug.parameter} | ${drug.result}`
+      ]);
 
+    });
 
-d.activeDrugs.forEach((d,i)=>{
+    const csv = rows
+      .map(row =>
+        row.map(v => `"${String(v ?? '').replace(/"/g,'""')}"`).join(',')
+      )
+      .join('\n');
 
-    infusionSummary += `
-Infusion ${index+1}
-------------------
+    const blob = new Blob(
+      [csv],
+      { type: 'text/csv;charset=utf-8;' }
+    );
 
-Medication : ${d.drug}
-Preparation: ${d.prep}
-Parameter  : ${d.parameter}
-Result     : ${d.result}
+    const link = document.createElement('a');
 
-]);
+    link.href = URL.createObjectURL(blob);
 
-});
+    link.download =
+      `ICU_Patient_${d.patient.bed || 'Summary'}.csv`;
 
-   
+    link.click();
 
+    URL.revokeObjectURL(link.href);
 
-    const csv =
-      rows.map(r=>r.join(',')).join('\n');
+    showToast('CSV exported successfully!', 'sky');
 
-    const blob =
-      new Blob([csv],{type:'text/csv'});
-
-    const a =
-      document.createElement('a');
-
-    a.href =
-      URL.createObjectURL(blob);
-
-    a.download =
-      'ICU_Patient_Summary.csv';
-
-    a.click();
 }
-
-
 
 
 
