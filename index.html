@@ -3,12 +3,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Critical Care Drugs Dosages & Infusion Rate Calculator</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>Acute Internal Medicine Critical Care Dashboard</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com">\</script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- jsPDF -->
+  https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.jsscript>
+  
+     <style>
     @keyframes alert-pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.85; transform: scale(0.99); }
@@ -70,6 +83,13 @@
           <button onclick="exportCSV()" class="bg-slate-700 hover:bg-slate-600 text-slate-100 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border border-slate-600 transition shadow-sm">
             <i class="fa-solid fa-file-arrow-down text-sky-400"></i> CSV
           </button>
+          <button onclick="exportPDF()"
+class="bg-red-600 hover:bg-red-500 text-white px-3 py-1.5 rounded-lg text-xs font-semibold">
+
+<i class="fa-solid fa-file-pdf"></i>
+PDF
+
+</button>
 
 
 
@@ -2469,6 +2489,125 @@ function exportCSV(){
 
 }
 
+function exportPDF(){
+
+    const d = getSummaryData();
+
+    const { jsPDF } = window.jspdf;
+
+    const doc = new jsPDF();
+
+    let y = 15;
+
+    doc.setFontSize(16);
+    doc.text('ICU Patient Summary', 10, y);
+
+    y += 10;
+
+    doc.setFontSize(10);
+
+    doc.text(`Name: ${d.patient.name}`,10,y); y+=6;
+    doc.text(`Bed: ${d.patient.bed}`,10,y); y+=6;
+    doc.text(`Age: ${d.patient.age}`,10,y); y+=6;
+    doc.text(`Weight: ${d.patient.weight} kg`,10,y); y+=6;
+    doc.text(`Sex: ${d.patient.sex}`,10,y); y+=6;
+    doc.text(`CrCl: ${d.patient.crcl}`,10,y); y+=10;
+
+    doc.setFontSize(12);
+    doc.text('Diagnosis',10,y);
+
+    y += 6;
+
+    doc.setFontSize(10);
+
+    doc.text(
+      `Problems: ${d.diagnosis.problems || '-'}`,
+      10,
+      y
+    );
+
+    y += 6;
+
+    doc.text(
+      `Comorbidities: ${d.diagnosis.comorbids || '-'}`,
+      10,
+      y
+    );
+
+    y += 10;
+
+    doc.setFontSize(12);
+    doc.text('Monitoring',10,y);
+
+    y += 6;
+
+    doc.setFontSize(10);
+
+    doc.text(
+      `MAP: ${d.monitoring.map}`,
+      10,
+      y
+    );
+
+    y += 6;
+
+    doc.text(
+      `Shock Index: ${d.monitoring.shockIndex}`,
+      10,
+      y
+    );
+
+    y += 6;
+
+    doc.text(
+      `ROX Score: ${d.monitoring.rox}`,
+      10,
+      y
+    );
+
+    y += 6;
+
+    doc.text(
+      `PF Ratio: ${d.monitoring.pf}`,
+      10,
+      y
+    );
+
+    y += 10;
+
+    doc.setFontSize(12);
+    doc.text('Active Medications',10,y);
+
+    y += 6;
+
+    doc.setFontSize(10);
+
+    if(d.activeMedications.length === 0){
+
+        doc.text('None',10,y);
+
+        y += 6;
+
+    }else{
+
+        d.activeMedications.forEach(m=>{
+
+            doc.text(
+              `${m.drug} - ${m.dose}`,
+              10,
+              y
+            );
+
+            y += 6;
+
+        });
+    }
+
+    doc.save(
+      `ICU_Patient_${d.patient.bed}.pdf`
+    );
+
+}
 
 
 
