@@ -2504,8 +2504,7 @@ function exportCSV(){
     URL.revokeObjectURL(a.href);
 
 }
-
-    async function exportPDF(){
+async function exportPDF(){
 
     await loadJsPDF();
 
@@ -2517,38 +2516,26 @@ function exportCSV(){
 
     let y = 15;
 
-    doc.setFontSize(16);
-    doc.text('ICU Patient Summary',10,y);
+    doc.setFontSize(18);
+    doc.text('ICU PATIENT SUMMARY',10,y);
 
-    y += 15;
+    y += 12;
 
     doc.setFontSize(11);
 
-    doc.text(`Name: ${d.patient.name}`,10,y); y+=8;
-    doc.text(`Bed: ${d.patient.bed}`,10,y); y+=8;
-    doc.text(`Age: ${d.patient.age}`,10,y); y+=8;
-    doc.text(`Weight: ${d.patient.weight} kg`,10,y); y+=8;
-    doc.text(`Sex: ${d.patient.sex}`,10,y); y+=8;
-    doc.text(`CrCl: ${d.patient.crcl}`,10,y); y+=12;
+    doc.text(`Name: ${d.patient.name}`,10,y); y+=7;
+    doc.text(`Bed: ${d.patient.bed}`,10,y); y+=7;
+    doc.text(`Age: ${d.patient.age}`,10,y); y+=7;
+    doc.text(`Weight: ${d.patient.weight} kg`,10,y); y+=7;
+    doc.text(`Sex: ${d.patient.sex}`,10,y); y+=7;
+    doc.text(`CrCl: ${d.patient.crcl}`,10,y); y+=10;
 
     doc.setFontSize(13);
-    doc.text('Monitoring',10,y);
+    doc.text('DIAGNOSIS',10,y);
 
     y += 8;
 
-    doc.setFontSize(11);
-
-    doc.text(`MAP: ${d.monitoring.map}`,10,y); y+=8;
-    doc.text(`Shock Index: ${d.monitoring.shockIndex}`,10,y); y+=8;
-    doc.text(`ROX Score: ${d.monitoring.rox}`,10,y); y+=8;
-    doc.text(`PF Ratio: ${d.monitoring.pf}`,10,y); y+=12;
-
-    doc.setFontSize(13);
-    doc.text('Diagnosis',10,y);
-
-    y += 8;
-
-    doc.setFontSize(11);
+    doc.setFontSize(10);
 
     doc.text(
       `Problems: ${d.diagnosis.problems || '-'}`,
@@ -2556,7 +2543,7 @@ function exportCSV(){
       y
     );
 
-    y += 8;
+    y += 7;
 
     doc.text(
       `Comorbidities: ${d.diagnosis.comorbids || '-'}`,
@@ -2564,14 +2551,176 @@ function exportCSV(){
       y
     );
 
+    y += 7;
+
+    doc.text(
+      `Resuscitation Status: ${d.diagnosis.resus || '-'}`,
+      10,
+      y
+    );
+
     y += 12;
 
     doc.setFontSize(13);
-    doc.text('Active Medications',10,y);
+    doc.text('OXYGEN & TARGETS',10,y);
 
     y += 8;
 
-    doc.setFontSize(11);
+    doc.setFontSize(10);
+
+    doc.text(
+      `Target MAP: ${d.targets.map}`,
+      10,
+      y
+    );
+
+    y += 7;
+
+    doc.text(
+      `Target SpO2: ${d.targets.spo2}`,
+      10,
+      y
+    );
+
+    y += 7;
+
+    doc.text(
+      `Highest O2 Support: ${d.oxygen.support}`,
+      10,
+      y
+    );
+
+    y += 7;
+
+    doc.text(
+      `Highest FiO2: ${d.oxygen.fio2}%`,
+      10,
+      y
+    );
+
+    y += 12;
+
+    doc.setFontSize(13);
+    doc.text('MONITORING',10,y);
+
+    y += 8;
+
+    doc.setFontSize(10);
+
+    doc.text(`HR: ${d.monitoring.hr}`,10,y); y+=7;
+    doc.text(`RR: ${d.monitoring.rr}`,10,y); y+=7;
+    doc.text(`SBP: ${d.monitoring.sbp}`,10,y); y+=7;
+    doc.text(`DBP: ${d.monitoring.dbp}`,10,y); y+=7;
+    doc.text(`MAP: ${d.monitoring.map}`,10,y); y+=7;
+    doc.text(`Shock Index: ${d.monitoring.shockIndex}`,10,y); y+=7;
+    doc.text(`ROX Score: ${d.monitoring.rox}`,10,y); y+=7;
+    doc.text(`PF Ratio: ${d.monitoring.pf}`,10,y); y+=12;
+
+    doc.setFontSize(13);
+    doc.text('ABG',10,y);
+
+    y += 8;
+
+    doc.setFontSize(10);
+
+    doc.text(`pH: ${d.abg.ph}`,10,y); y+=7;
+    doc.text(`PaO2: ${d.abg.pao2}`,10,y); y+=7;
+    doc.text(`PaCO2: ${d.abg.paco2}`,10,y); y+=7;
+    doc.text(`HCO3: ${d.abg.hco3}`,10,y); y+=7;
+    doc.text(`Base Excess: ${d.abg.be}`,10,y); y+=12;
+
+    doc.setFontSize(13);
+    doc.text('POCUS',10,y);
+
+    y += 8;
+
+    doc.setFontSize(10);
+
+    doc.text(
+      `LUS Admission: ${d.pocus.lung.admission}`,
+      10,
+      y
+    );
+
+    y += 7;
+
+    doc.text(
+      `LUS Ward: ${d.pocus.lung.ward}`,
+      10,
+      y
+    );
+
+    y += 7;
+
+    doc.text(
+      `LUS Pre-Discharge: ${d.pocus.lung.discharge}`,
+      10,
+      y
+    );
+
+    y += 7;
+
+    doc.text(
+      `IVC Diameter: ${d.pocus.ivcDiameter}`,
+      10,
+      y
+    );
+
+    y += 7;
+
+    doc.text(
+      `IVC Collapse: ${d.pocus.ivcCollapse}`,
+      10,
+      y
+    );
+
+    y += 7;
+
+    doc.text(
+      `Delta VTI: ${d.pocus.deltaVTI}`,
+      10,
+      y
+    );
+
+    y += 7;
+
+    doc.text(
+      `Delta SV: ${d.pocus.deltaSV}`,
+      10,
+      y
+    );
+
+    y += 7;
+
+    doc.text(
+      `Delta CO: ${d.pocus.deltaCO}`,
+      10,
+      y
+    );
+
+    y += 7;
+
+    doc.text(
+      `POCUS Impression: ${d.pocus.impression || '-'}`,
+      10,
+      y
+    );
+
+    y += 12;
+
+    if(y > 250){
+
+        doc.addPage();
+        y = 20;
+
+    }
+
+    doc.setFontSize(13);
+    doc.text('ACTIVE MEDICATIONS',10,y);
+
+    y += 8;
+
+    doc.setFontSize(10);
 
     if(d.activeMedications.length){
 
@@ -2583,7 +2732,7 @@ function exportCSV(){
               y
             );
 
-            y += 8;
+            y += 7;
 
         });
 
@@ -2591,15 +2740,42 @@ function exportCSV(){
 
         doc.text('None',10,y);
 
+        y += 7;
+
     }
 
+    y += 5;
+
+    doc.setFontSize(13);
+    doc.text('ACTIVE INFUSIONS',10,y);
+
+    y += 8;
+
+    doc.setFontSize(10);
+
+    if(d.activeDrugs.length){
+
+        d.activeDrugs.forEach(i=>{
+
+            doc.text(
+              `${i.drug} | ${i.parameter} | ${i.result}`,
+              10,
+              y
+            );
+
+            y += 7;
+
+        });
+
+    }else{
+
+        doc.text('None',10,y);
+    }
     doc.save(
       `ICU_Patient_${d.patient.bed}.pdf`
     );
 
 }
-
-
 
 
     // 3. SHARE FUNCTION (Web Share API or Clipboard Fallback)
