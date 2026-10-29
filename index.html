@@ -2331,98 +2331,144 @@ function exportCSV(){
 
     const d = getSummaryData();
 
-    const rows = [
+    const headers = [
 
-      ['Patient Name', d.patient.name],
-      ['Bed', d.patient.bed],
-      ['Age', d.patient.age],
-      ['Weight', d.patient.weight],
-      ['Sex', d.patient.sex],
-      ['CrCl', d.patient.crcl],
+      'Patient Name',
+      'Bed',
+      'Age',
+      'Weight',
+      'Sex',
+      'CrCl',
 
-      ['Problems', d.diagnosis.problems],
-      ['Comorbidities', d.diagnosis.comorbids],
-      ['Resuscitation Status', d.diagnosis.resus],
+      'Problems',
+      'Comorbidities',
+      'Resuscitation Status',
 
-      ['Target MAP', d.targets.map],
-      ['Target SpO2', d.targets.spo2],
+      'Target MAP',
+      'Target SpO2',
 
-      ['Highest O2', d.oxygen.support],
-      ['Highest FiO2', d.oxygen.fio2],
+      'Highest O2',
+      'Highest FiO2',
 
-      ['HR', d.monitoring.hr],
-      ['RR', d.monitoring.rr],
-      ['SBP', d.monitoring.sbp],
-      ['DBP', d.monitoring.dbp],
-      ['MAP', d.monitoring.map],
-      ['Shock Index', d.monitoring.shockIndex],
-      ['ROX Score', d.monitoring.rox],
-      ['PF Ratio', d.monitoring.pf],
+      'HR',
+      'RR',
+      'SBP',
+      'DBP',
+      'MAP',
+      'Shock Index',
+      'ROX Score',
+      'PF Ratio',
 
-      ['pH', d.abg.ph],
-      ['PaO2', d.abg.pao2],
-      ['PaCO2', d.abg.paco2],
-      ['HCO3', d.abg.hco3],
-      ['Base Excess', d.abg.be],
+      'pH',
+      'PaO2',
+      'PaCO2',
+      'HCO3',
+      'Base Excess',
 
-      ['LUS Admission', d.pocus.lung.admission],
-      ['LUS Ward', d.pocus.lung.ward],
-      ['LUS Discharge', d.pocus.lung.discharge],
+      'LUS Admission',
+      'LUS Ward',
+      'LUS Discharge',
 
-      ['IVC Diameter', d.pocus.ivcDiameter],
-      ['IVC Collapse', d.pocus.ivcCollapse],
+      'IVC Diameter',
+      'IVC Collapse',
 
-      ['Delta VTI', d.pocus.deltaVTI],
-      ['Delta SV', d.pocus.deltaSV],
-      ['Delta CO', d.pocus.deltaCO],
+      'Delta VTI',
+      'Delta SV',
+      'Delta CO',
 
-      ['POCUS Impression', d.pocus.impression]
+      'POCUS Impression',
+
+      'Active Medications',
+      'Active Infusions'
+    ];
+
+    const meds =
+      d.activeMedications
+      .map(m => `${m.drug} (${m.dose})`)
+      .join(' | ');
+
+    const infusions =
+      d.activeDrugs
+      .map(i => `${i.drug}: ${i.result}`)
+      .join(' | ');
+
+    const values = [
+
+      d.patient.name,
+      d.patient.bed,
+      d.patient.age,
+      d.patient.weight,
+      d.patient.sex,
+      d.patient.crcl,
+
+      d.diagnosis.problems,
+      d.diagnosis.comorbids,
+      d.diagnosis.resus,
+
+      d.targets.map,
+      d.targets.spo2,
+
+      d.oxygen.support,
+      d.oxygen.fio2,
+
+      d.monitoring.hr,
+      d.monitoring.rr,
+      d.monitoring.sbp,
+      d.monitoring.dbp,
+      d.monitoring.map,
+      d.monitoring.shockIndex,
+      d.monitoring.rox,
+      d.monitoring.pf,
+
+      d.abg.ph,
+      d.abg.pao2,
+      d.abg.paco2,
+      d.abg.hco3,
+      d.abg.be,
+
+      d.pocus.lung.admission,
+      d.pocus.lung.ward,
+      d.pocus.lung.discharge,
+
+      d.pocus.ivcDiameter,
+      d.pocus.ivcCollapse,
+
+      d.pocus.deltaVTI,
+      d.pocus.deltaSV,
+      d.pocus.deltaCO,
+
+      d.pocus.impression,
+
+      meds,
+      infusions
 
     ];
 
-    d.activeMedications.forEach((m,index)=>{
-
-      rows.push([
-        `Medication ${index + 1}`,
-        `${m.drug} - ${m.dose}`
-      ]);
-
-    });
-
-    d.activeDrugs.forEach((drug,index)=>{
-
-      rows.push([
-        `Infusion ${index + 1}`,
-        `${drug.drug} | ${drug.parameter} | ${drug.result}`
-      ]);
-
-    });
-
-    const csv = rows
-      .map(row =>
-        row.map(v => `"${String(v ?? '').replace(/"/g,'""')}"`).join(',')
-      )
-      .join('\n');
+    const csv =
+      headers.join(',') +
+      '\n' +
+      values.map(v =>
+        `"${String(v ?? '').replace(/"/g,'""')}"`
+      ).join(',');
 
     const blob = new Blob(
       [csv],
-      { type: 'text/csv;charset=utf-8;' }
+      { type:'text/csv;charset=utf-8;' }
     );
 
-    const link = document.createElement('a');
+    const a = document.createElement('a');
 
-    link.href = URL.createObjectURL(blob);
+    a.href = URL.createObjectURL(blob);
 
-    link.download =
-      `ICU_Patient_${d.patient.bed || 'Summary'}.csv`;
+    a.download =
+      `ICU_Patient_${d.patient.bed}.csv`;
 
-    link.click();
+    a.click();
 
-    URL.revokeObjectURL(link.href);
-
-    showToast('CSV exported successfully!', 'sky');
+    URL.revokeObjectURL(a.href);
 
 }
+
 
 
 
