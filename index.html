@@ -1,3 +1,5 @@
+Editted
+
 
 
 
@@ -5,22 +7,13 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
-
-  <title>Acute Internal Medicine Critical Care Dashboard</title>
-
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com">\</script>
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Critical Care Drugs Dosages & Infusion Rate Calculator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
     @keyframes alert-pulse {
       0%, 100% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.85; transform: scale(0.99); }
@@ -43,8 +36,6 @@
     }
   </style>
 </head>
-
-
 <body class="bg-slate-900 text-slate-100 min-h-screen font-sans pb-12">
 
   <!-- HEADER -->
@@ -80,11 +71,12 @@
             <i class="fa-solid fa-floppy-disk text-emerald-400"></i> Save
           </button>
           
-        
+          <!-- Export Button -->
+          <button onclick="exportCSV()" class="bg-slate-700 hover:bg-slate-600 text-slate-100 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border border-slate-600 transition shadow-sm">
+            <i class="fa-solid fa-file-arrow-down text-sky-400"></i> CSV
+          </button>
 
-       <button onclick="exportCSV()" class="bg-slate-700 hover:bg-slate-600 text-slate-100 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border border-slate-600 transition shadow-sm">
-            <i class="fa-solid fa-floppy-disk text-emerald-400"></i> CSV
-        </button>
+
 
 
           <!-- Share Button -->
@@ -160,6 +152,7 @@
       class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
   </textarea>
 </div>
+          
 <div>
   <label class="block text-xs font-medium text-slate-300 mb-1">
     Comorbidities
@@ -172,9 +165,8 @@
       class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100">
   </textarea>
 </div>
+          
 <div class="grid grid-cols-2 gap-3">
-
-  <div class="grid grid-cols-2 gap-3">
 
   <div>
     <label class="block text-xs font-medium text-slate-300 mb-1">
@@ -200,7 +192,8 @@
       value="92"
       class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm">
   </div>
-
+</div>
+          
 <div class="grid grid-cols-2 gap-3">
 
   <div>
@@ -244,8 +237,14 @@
       <option>Intubated</option>
 
     </select>
-
+  </div>
+        
 <div class="grid grid-cols-2 gap-3">
+
+  <div>
+    <label class="block text-xs font-medium text-slate-300 mb-1">
+      Highest FiO₂ (%)
+    </label>
 
     <input
       id="highest-fio2"
@@ -254,34 +253,9 @@
       max="100"
       value="21"
       class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm">
-
-<label class="block text-xs font-medium text-slate-300 mb-1">
-  Highest FiO₂ (%)
-</label>
-
-</div>
-
-<div>
-
-  <label class="block text-xs font-medium text-slate-300 mb-1">
-    Peri-Intubation Arrest
-  </label>
-
-  <select
-      id="peri-arrest"
-      class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-sm">
-
-      <option>No</option>
-      <option>Yes</option>
-
-  </select>
-
-</div>
-
-    </div>
-
   </div>
 
+</div>
 
           <div>
             <div class="flex justify-between items-center mb-1">
@@ -408,8 +382,9 @@
       </div>
 
     </div>
-
   </div>
+
+
 
   <div class="grid grid-cols-2 gap-3 mt-3">
 
@@ -472,6 +447,9 @@
       </div>
 
     </div>
+
+  </div>
+  
 <div class="grid grid-cols-2 gap-3 mt-3">
 
   <div>
@@ -541,10 +519,6 @@
     step="0.01"
     placeholder="7.40"
     class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2">
-
-</div>
-
-  </div>
 
 </div>
 
@@ -951,7 +925,6 @@
     <!-- RIGHT COLUMN: CALCULATORS & ANTIMICROBIALS -->
     <div class="lg:col-span-8 space-y-6">
 
-</div>
 
       <!-- MAIN CALCULATOR -->
       <div class="bg-slate-800 rounded-xl border border-slate-700 p-5 shadow-lg">
@@ -1019,13 +992,22 @@
           </div>
         </div>
 
+      </div>
+
+    </div>
+  
+      
 <div class="bg-slate-900 border border-slate-700 rounded-xl p-4 mb-5">
 
     <div class="flex justify-between items-center mb-3">
 
         <h3 class="text-sm font-bold text-sky-300">
-            <i class="fa-solid fa-notes-medical mr-2"></i>
+    <i class="fa-solid fa-notes-medical mr-2"></i>
+    Drug Calculator
+</h3>
 
+    </div>
+  
            
         <!-- DRUG SELECTION & STRENGTH -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
@@ -1111,7 +1093,40 @@
           </div>
         </div>
 
-      </div>
+
+
+<div class="mt-3">
+    <button
+        onclick="addCurrentDrug()"
+        class="bg-sky-600 hover:bg-sky-500 text-white px-3 py-2 rounded-lg text-xs font-semibold">
+
+        ➕ Add To Active Infusions
+
+    </button>
+</div>
+
+</div>
+
+<!-- RUNNING INFUSIONS -->
+<div class="bg-slate-800 rounded-xl border border-slate-700 p-5 shadow-lg mt-6">
+
+  <h3 class="text-sm font-bold text-sky-400 mb-3">
+    <i class="fa-solid fa-pump-medical mr-2"></i>
+    Running Infusions
+  </h3>
+
+  <div
+      id="active-drugs-list"
+      class="space-y-2">
+
+      <p class="text-xs text-slate-400">
+        No active infusions added.
+      </p>
+
+  </div>
+
+</div>
+
 
       <!-- EXTENDED TITRATION MATRIX TABLE -->
       <div class="bg-slate-800 rounded-xl border border-slate-700 p-5 shadow-lg">
@@ -1314,7 +1329,9 @@
 
     let currentCategory = 'vaso';
     let currentCalcMode = 'forward';
-
+let activeDrugs = [];
+let activeMedications = [];
+    
     window.addEventListener('DOMContentLoaded', () => {
       setupEventListeners();
       populateDrugDropdown();
@@ -1322,7 +1339,9 @@
       calculate();
       calculateMonitoring();
 
+
     });
+
 
     function setupEventListeners() {
       ['pt-weight', 'pt-age', 'pt-sex', 'pt-scr', 'pt-name', 'pt-id'].forEach(id => {
@@ -1788,106 +1807,6 @@
       document.getElementById('calc-input').value = dose;
       calculate();
     }
-
-let activeDrugs = [];
-
-function addCurrentDrug(){
-
-    const drugKey =
-        document.getElementById('drug-select').value;
-
-    const drug = DRUGS[drugKey];
-
-    const prep =
-        document.getElementById('strength-select');
-
-    const prepText =
-        prep.options[prep.selectedIndex].text;
-
-    const parameter =
-        document.getElementById('calc-input').value;
-
-    const result =
-        document.getElementById('calc-output-val').textContent;
-
-    const inputUnit =
-        document.getElementById('input-unit').textContent;
-
-    const outputUnit =
-        document.getElementById('output-unit').textContent;
-
-    activeDrugs.push({
-        drug: drug.name,
-        prep: prepText,
-        parameter: `${parameter} ${inputUnit}`,
-        result: `${result} ${outputUnit}`
-    });
-
-    renderActiveDrugList();
-}
-
-function removeActiveDrug(index){
-
-    activeDrugs.splice(index,1);
-
-    renderActiveDrugList();
-}
-
-function renderActiveDrugList(){
-
-    const list =
-        document.getElementById('active-drugs-list');
-
-
-    if(!list) return;
-
-    list.innerHTML = '';
-
-    activeDrugs.forEach((drug,index)=>{
-
-        list.innerHTML += `
-
-        <div class="bg-slate-800 border border-slate-700 rounded-lg p-3">
-
-            <div class="flex justify-between">
-
-                <div>
-
-                    <div class="font-bold text-sky-300">
-                        ${drug.drug}
-                    </div>
-
-                    <div class="text-xs text-slate-400 mt-1">
-                        ${drug.prep}
-                    </div>
-
-                    <div class="text-xs text-emerald-400 mt-1">
-                        ${drug.parameter}
-                    </div>
-
-                    <div class="text-xs text-amber-300">
-                        ${drug.result}
-                    </div>
-
-                </div>
-
-                <button
-                    onclick="removeActiveDrug(${index})"
-                    class="text-rose-400 hover:text-rose-300">
-
-                    <i class="fa-solid fa-trash"></i>
-
-                </button>
-
-            </div>
-
-        </div>
-
-        `;
-
-    });
-
-}
 function calculateMonitoring(){
 
     const hr =
@@ -2014,10 +1933,105 @@ if(pao2 && fio2){
       pf.toFixed(0);
 
 }
+}
 
----  // ACTIVE MEDICATION//---
 
-let activeMedications = [];
+function addCurrentDrug(){
+
+    const drugKey =
+        document.getElementById('drug-select').value;
+
+    const drug = DRUGS[drugKey];
+
+    const prep =
+        document.getElementById('strength-select');
+
+    const prepText =
+        prep.options[prep.selectedIndex].text;
+
+    const parameter =
+        document.getElementById('calc-input').value;
+
+    const result =
+        document.getElementById('calc-output-val').textContent;
+
+    const inputUnit =
+        document.getElementById('input-unit').textContent;
+
+    const outputUnit =
+        document.getElementById('output-unit').textContent;
+
+    activeDrugs.push({
+        drug: drug.name,
+        prep: prepText,
+        parameter: `${parameter} ${inputUnit}`,
+        result: `${result} ${outputUnit}`
+    });
+
+    renderActiveDrugList();
+}
+
+function removeActiveDrug(index){
+
+    activeDrugs.splice(index,1);
+
+    renderActiveDrugList();
+}
+
+function renderActiveDrugList(){
+
+    const list =
+        document.getElementById('active-drugs-list');
+
+    if(!list) return;
+
+    list.innerHTML = '';
+
+    activeDrugs.forEach((drug,index)=>{
+
+        list.innerHTML += `
+
+        <div class="bg-slate-800 border border-slate-700 rounded-lg p-3">
+
+            <div class="flex justify-between">
+
+                <div>
+
+                    <div class="font-bold text-sky-300">
+                        ${drug.drug}
+                    </div>
+
+                    <div class="text-xs text-slate-400 mt-1">
+                        ${drug.prep}
+                    </div>
+
+                    <div class="text-xs text-emerald-400 mt-1">
+                        ${drug.parameter}
+                    </div>
+
+                    <div class="text-xs text-amber-300">
+                        ${drug.result}
+                    </div>
+
+                </div>
+
+                <button
+                    onclick="removeActiveDrug(${index})"
+                    class="text-rose-400 hover:text-rose-300">
+
+                    <i class="fa-solid fa-trash"></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+}
 
 function addMedication(){
 
@@ -2094,12 +2108,16 @@ function renderMedications(){
 
 
 
+// ACTION FUNCTIONS
+
 
     // ==========================================
     // ACTION FUNCTIONS: EXPORT, SAVE, SHARE, PRINT
     // ==========================================
 
-    function getSummaryData(){
+   
+
+function getSummaryData(){
 
   return {
 
@@ -2107,7 +2125,7 @@ function renderMedications(){
 
     patient: {
       name: document.getElementById('pt-name').value,
-      ID: document.getElementById('pt-id').value,
+      bed: document.getElementById('pt-id').value,
       weight: document.getElementById('pt-weight').value,
       age: document.getElementById('pt-age').value,
       sex: document.getElementById('pt-sex').value,
@@ -2184,9 +2202,7 @@ function renderMedications(){
         document.getElementById('pocus-impression').value
     },
 
- infusionCalculation: {
-
-      const drugKey = document.getElementById('drug-select').value;
+  const drugKey = document.getElementById('drug-select').value;
       const drug = DRUGS[drugKey];
       const strKey = document.getElementById('strength-select').value;
       const strObj = drug.strengths[strKey] || Object.values(drug.strengths)[0];
@@ -2206,25 +2222,37 @@ function renderMedications(){
           input: `${inputVal} ${inputUnit}`,
           output: `${outputVal} ${outputUnit}`,
           details: strObj.detail
-        }
-      };
     }
-    
+  };
+}
 
-      
-
-
-   function generateFormattedTextSummary() {
+function generateFormattedTextSummary() {
 
   const data = getSummaryData();
 
-  let drugSummary = '';
+  const map =
+      document.getElementById('map-output').textContent;
 
-  activeDrugs.forEach((d,index)=>{
+  const shock =
+      document.getElementById('shock-index').textContent;
 
-    drugSummary += `
-Drug ${index+1}
-----------------
+  const rox =
+      document.getElementById('rox-score').textContent;
+
+  const pf =
+      document.getElementById('pf-ratio').textContent;
+
+ 
+
+let infusionSummary = '';
+let medicationSummary = '';
+
+activeDrugs.forEach((d,index)=>{
+
+    infusionSummary += `
+Infusion ${index+1}
+------------------
+
 Medication : ${d.drug}
 Preparation: ${d.prep}
 Parameter  : ${d.parameter}
@@ -2232,9 +2260,22 @@ Result     : ${d.result}
 
 `;
 
-  });
+});
+activeMedications.forEach((m,index)=>{
 
-  return `
+    medicationSummary += `
+Medication ${index+1}
+---------------------
+
+Drug : ${m.drug}
+Dose : ${m.dose}
+
+`;
+
+});
+
+
+return `
 
 CRITICAL CARE DRUGS DOSAGES & INFUSION RATE CALCULATOR
 --------------------------------------------------
@@ -2254,16 +2295,32 @@ CrCl   : ${data.patient.crcl}
 
 ==================================================
 
-ACTIVE ICU MEDICATIONS
+CURRENT MONITORING
 
-${drugSummary}
+MAP          : ${map}
+Shock Index  : ${shock}
+ROX Score    : ${rox}
+P/F Ratio    : ${pf}
+
+==================================================
+
+ACTIVE INFUSIONS
+
+${infusionSummary}
+
+==================================================
+
+ACTIVE MEDICATIONS
+
+${medicationSummary}
+
 
 ==================================================
 
 `;
-
+  
 }
-
+    
    
 function saveCalculation() {
       const data = getSummaryData();
@@ -2273,72 +2330,123 @@ function saveCalculation() {
       showToast('Calculation saved locally successfully!', 'emerald');
     }
 
-    // 2. EXPORT FUNCTION 
+    // 2. EXPORT FUNCTION (Downloads Text Report)
+    function exportReport() {
+      const text = generateFormattedTextSummary();
+      const ptId = document.getElementById('pt-id').value || 'Patient';
+      const filename = `Infusion_Report_${ptId.replace(/\s+/g, '_')}.txt`;
+      
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(link.href);
+      
+      showToast('Report exported successfully!', 'sky');
+    }
 
-
-  function exportCSV(){
+function exportCSV(){
 
     const d = getSummaryData();
 
-    let csv = 'Field,Value\n';
+    const rows = [
 
-    csv += `"Patient Name","${d.patient.name}"\n`;
-    csv += `"Bed","${d.patient.id}"\n`;
-    csv += `"Weight","${d.patient.weight}"\n`;
-    csv += `"Age","${d.patient.age}"\n`;
-    csv += `"Sex","${d.patient.sex}"\n`;
-    csv += `"CrCl","${d.patient.crcl}"\n`;
+      ['Patient Name', d.patient.name],
+      ['Bed', d.patient.bed],
+      ['Age', d.patient.age],
+      ['Weight', d.patient.weight],
+      ['Sex', d.patient.sex],
+      ['CrCl', d.patient.crcl],
 
-    csv += `"Problem List","${(d.diagnosis?.problems || '').replace(/\n/g,' | ')}"\n`;
-    csv += `"Comorbidities","${d.diagnosis?.comorbids || ''}"\n`;
+      ['Problems', d.diagnosis.problems],
+      ['Comorbidities', d.diagnosis.comorbids],
 
-    csv += `"Target MAP","${d.targets?.map || ''}"\n`;
-    csv += `"Target SpO2","${d.targets?.spo2 || ''}"\n`;
+      ['Target MAP', d.targets.map],
+      ['Target SpO2', d.targets.spo2],
 
-    csv += `"HR","${d.monitoring?.hr || ''}"\n`;
-    csv += `"RR","${d.monitoring?.rr || ''}"\n`;
-    csv += `"SBP","${d.monitoring?.sbp || ''}"\n`;
-    csv += `"DBP","${d.monitoring?.dbp || ''}"\n`;
-    csv += `"MAP","${d.monitoring?.map || ''}"\n`;
+      ['Highest O2', d.oxygen.support],
+      ['Highest FiO2', d.oxygen.fio2],
 
-    csv += `"ROX","${d.monitoring?.rox || ''}"\n`;
-    csv += `"PF Ratio","${d.monitoring?.pf || ''}"\n`;
+      ['HR', d.monitoring.hr],
+      ['RR', d.monitoring.rr],
+      ['SBP', d.monitoring.sbp],
+      ['DBP', d.monitoring.dbp],
+      ['MAP', d.monitoring.map],
+      ['Shock Index', d.monitoring.shockIndex],
+      ['ROX Score', d.monitoring.rox],
+      ['PF Ratio', d.monitoring.pf],
 
-    csv += `"pH","${d.abg?.ph || ''}"\n`;
-    csv += `"PaO2","${d.abg?.pao2 || ''}"\n`;
-    csv += `"PaCO2","${d.abg?.paco2 || ''}"\n`;
-    csv += `"HCO3","${d.abg?.hco3 || ''}"\n`;
+      ['pH', d.abg.ph],
+      ['PaO2', d.abg.pao2],
+      ['PaCO2', d.abg.paco2],
+      ['HCO3', d.abg.hco3],
 
-    csv += `"LUS Admission","${d.pocus?.lung?.admission || ''}"\n`;
-    csv += `"LUS Ward","${d.pocus?.lung?.ward || ''}"\n`;
-    csv += `"LUS Discharge","${d.pocus?.lung?.discharge || ''}"\n`;
+      ['LUS Admission', d.pocus.lung.admission],
+      ['LUS Ward', d.pocus.lung.ward],
+      ['LUS Discharge', d.pocus.lung.discharge],
+      ['IVC Diameter', d.pocus.ivcDiameter],
+      ['IVC Collapse', d.pocus.ivcCollapse],
+      ['Delta VTI', d.pocus.deltaVTI],
+      ['Delta SV', d.pocus.deltaSV],
+      ['Delta CO', d.pocus.deltaCO],
 
-    csv += `"IVC Diameter","${d.pocus?.ivcDiameter || ''}"\n`;
-    csv += `"IVC Collapse","${d.pocus?.ivcCollapse || ''}"\n`;
+      ['POCUS Impression', d.pocus.impression]
 
-    csv += `"POCUS Impression","${d.pocus?.impression || ''}"\n`;
+    ];
 
-    activeDrugs.forEach((d,i)=>{
-        csv += `"Drug ${i+1}","${d.drug} - ${d.result}"\n`;
+    d.activeMedication.forEach((m,i)=>{
 
-    });
+     medicationSummary += `
+Medication ${index+1}
+---------------------
 
-    const blob = new Blob(
-      [csv],
-      { type:'text/csv;charset=utf-8;' }
-    );
+Drug : ${m.drug}
+Dose : ${m.dose}
 
-    const link = document.createElement('a');
+]);
 
-    link.href = URL.createObjectURL(blob);
+});
 
-    link.download =
+
+d.activeDrugs.forEach((d,index)=>{
+
+    infusionSummary += `
+Infusion ${index+1}
+------------------
+
+Medication : ${d.drug}
+Preparation: ${d.prep}
+Parameter  : ${d.parameter}
+Result     : ${d.result}
+
+]);
+
+});
+
+   
+
+
+    const csv =
+      rows.map(r=>r.join(',')).join('\n');
+
+    const blob =
+      new Blob([csv],{type:'text/csv'});
+
+    const a =
+      document.createElement('a');
+
+    a.href =
+      URL.createObjectURL(blob);
+
+    a.download =
       'ICU_Patient_Summary.csv';
 
-    link.click();
+    a.click();
 }
 
- 
+
+
 
 
     // 3. SHARE FUNCTION (Web Share API or Clipboard Fallback)
